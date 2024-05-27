@@ -1,3 +1,4 @@
+import os
 import sys
 
 builtin_commands = ["exit", "echo", "type"]
@@ -7,7 +8,13 @@ def handle_input(user_argument):
         if user_argument.split(" ")[1] in builtin_commands:
             sys.stdout.write(f"{user_argument.split(" ")[1]} is a shell builtin\n")
         else:
-            sys.stdout.write(f"{user_argument.split(" ")[1]} not found\n")
+            paths = os.getenv("PATH").split(":")
+            for path in paths:
+                if os.path.exists(f"{path}/{user_argument.split(" ")[1]}"):
+                    sys.stdout.write(f"{user_argument.split(" ")[1]} is {path}/{user_argument.split(" ")[1]}\n")
+                    break
+            else:
+                sys.stdout.write(f"{user_argument.split(" ")[1]} not found\n")
 
     elif user_argument == "exit 0":
         return False
