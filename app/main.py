@@ -1,10 +1,17 @@
 import sys
 
+builtin_commands = ["exit", "echo", "type"]
 
 def handle_input(user_argument):
-    if user_argument == "exit 0":
+    if "type" == user_argument.split(" ")[0]:
+        if user_argument.split(" ")[1] in builtin_commands:
+            sys.stdout.write(f"{user_argument.split(" ")[1]} is a shell builtin\n")
+        else:
+            sys.stdout.write(f"{user_argument.split(" ")[1]} not found\n")
+
+    elif user_argument == "exit 0":
         return False
-    elif "echo" in user_argument:
+    elif "echo" == user_argument.split(" ")[0]:
         sys.stdout.write(f"{user_argument.replace("echo", "")}\n")
     else:
         sys.stderr.write(f"{user_argument}: command not found\n")
