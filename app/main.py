@@ -1,14 +1,19 @@
 import sys
 
 
+def handle_input(user_argument):
+    sys.stderr.write(f"{user_argument}: command not found\n")
+    sys.stdout.flush()
+
+
 def main():
 
-    sys.stdout.write("$ ")
-    sys.stdout.flush()
     # Wait for user input
-    argument = input()
-    sys.stderr.write(f"{argument}: command not found\n")
-    sys.stdout.flush()
+    while True:
+        sys.stdout.write("$ ")
+        sys.stdout.flush()
+        user_argument = input()
+        handle_input(user_argument)
 
 
 if __name__ == "__main__":
