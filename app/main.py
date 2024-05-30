@@ -1,7 +1,7 @@
 import os
 import sys
 
-builtin_commands = ["exit", "echo", "type"]
+builtin_commands = ["exit", "echo", "type", "pwd"]
 def handle_input(user_argument):
     command_initial = user_argument.split(" ")[0]
     if len(user_argument.split(" ")) > 1:
@@ -23,6 +23,11 @@ def handle_input(user_argument):
         sys.stdout.write(f"{user_argument.replace("echo", "")}\n")
     elif os.path.exists(f"{command_initial}"):
         sys.stdout.write(os.popen(user_argument).read())        
+    elif command_initial == "pwd":
+        cwd = os.getcwd()
+        abs_path = os.path.abspath(cwd)
+        sys.stdout.write(f"{abs_path}\n")
+        sys.stdout.flush()
     else:
         sys.stderr.write(f"{user_argument}: command not found\n")
         sys.stdout.flush()
