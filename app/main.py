@@ -25,10 +25,6 @@ def handle_input(user_argument):
         return False
     elif "echo" == command_initial:
         sys.stdout.write(f"{user_argument.split(" ",1)[1]}\n")
-        # value = user_argument.rstrip().replace("echo", "").replace("\r", "")
-        # sys.stdout.write(f"{value}\n")
-    elif os.path.exists(f"{command_initial}"):
-        sys.stdout.write(os.popen(user_argument).read())
     elif command_initial == "pwd":
         cwd = os.getcwd()
         abs_path = os.path.abspath(cwd)
@@ -37,8 +33,20 @@ def handle_input(user_argument):
     elif command_initial == "cd":
         if os.path.exists(command_argument):
             os.chdir(command_argument)
+        elif command_argument == "~":
+            os.chdir(os.environ['HOME'])
         else:
             sys.stderr.write(f"{command_argument}: No such file or directory\n")
+        """
+        if not any([os.path.exists(os.path.join(p, executable) for p in os.environ["PATH"].split(os.pathsep)]):
+        print "can't find %s" % executable
+
+        """
+    elif any([os.path.exists(os.path.join(p, command_initial)) for p in os.environ["PATH"].split(os.pathsep)]):
+        sys.stdout.write(os.popen(user_argument).read())
+    # elif os.path.exists(f"{command_initial}"):
+    #     print(os.environ["PATH"])
+    #     sys.stdout.write(os.popen(user_argument).read())
     else:
         sys.stderr.write(f"{user_argument}: command not found\n")
         sys.stdout.flush()
